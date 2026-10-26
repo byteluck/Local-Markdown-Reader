@@ -15,6 +15,7 @@ describe('build-theme-index', () => {
   beforeEach(async () => {
     root = join(tmpdir(), `local-markdown-reader-theme-index-${process.pid}-${Date.now()}`);
     await mkdir(join(root, 'themes', 'packages'), { recursive: true });
+    await mkdir(join(root, 'themes', 'previews'), { recursive: true });
   });
 
   afterEach(async () => {
@@ -29,10 +30,19 @@ describe('build-theme-index', () => {
       author: 'Local Markdown Reader',
       description: 'Dark reading theme.',
       minAppVersion: '2.3.0',
-      colorScheme: 'dark',
+      colorScheme: 'system',
       tokens: {
         '--reader-surface': '#111827',
       },
+      lightTokens: {
+        '--reader-page-bg': '#f8fafc',
+      },
+      darkTokens: {
+        '--reader-page-bg': '#0f172a',
+      },
+      features: ['callouts', 'file-tree'],
+      previewFixtures: ['longform', 'table'],
+      css: '[data-theme-layout-scope="toolbar-group"] .reader-toolbar__actions { gap: 8px; }',
     });
     await writeThemePackage(root, 'ink-focus', {
       id: 'ink-focus',
@@ -43,42 +53,66 @@ describe('build-theme-index', () => {
         '--reader-surface': '#ffffff',
       },
     });
+    await writeThemePreview(root, 'ink-focus', '<svg><text>Ink Focus</text></svg>');
+    await writeThemePreview(root, 'night-study', '<svg><text>Night Study</text></svg>');
     await writeMetadata(root, {
       version: 1,
+      schemaVersion: 2,
+      catalogVersion: '2026.07.08.1',
       updatedAt: '2026-07-06T00:00:00.000Z',
       packageBaseUrl: 'https://example.com/themes/packages/',
+      previewBaseUrl: 'https://example.com/themes/previews/',
       themes: {
         'ink-focus': {
           tags: ['light', 'technical'],
+          previewFixtures: ['code'],
         },
         'night-study': {
           tags: ['dark'],
-          previewUrl: 'https://example.com/previews/night-study.png',
         },
       },
     });
 
     const index = await buildThemeIndex({ rootDir: root });
+    const inkPackageHash = await sha256File(join(root, 'themes', 'packages', 'ink-focus.mdv-theme.json'));
+    const inkPreviewHash = await sha256File(join(root, 'themes', 'previews', 'ink-focus.svg'));
+    const nightPackageHash = await sha256File(join(root, 'themes', 'packages', 'night-study.mdv-theme.json'));
+    const nightPreviewHash = await sha256File(join(root, 'themes', 'previews', 'night-study.svg'));
 
     expect(index).toEqual({
       version: 1,
+      schemaVersion: 2,
+      catalogVersion: '2026.07.08.1',
       updatedAt: '2026-07-06T00:00:00.000Z',
       themes: [
         expect.objectContaining({
           id: 'ink-focus',
-          downloadUrl: 'https://example.com/themes/packages/ink-focus.mdv-theme.json',
-          sha256: await sha256File(join(root, 'themes', 'packages', 'ink-focus.mdv-theme.json')),
+          downloadUrl: versionedAssetUrl('https://example.com/themes/packages/ink-focus.mdv-theme.json', '1.0.0', inkPackageHash),
+          packageUrl: versionedAssetUrl('https://example.com/themes/packages/ink-focus.mdv-theme.json', '1.0.0', inkPackageHash),
+          previewUrl: versionedAssetUrl('https://example.com/themes/previews/ink-focus.svg', '1.0.0', inkPreviewHash),
+          sha256: inkPackageHash,
           tags: ['light', 'technical'],
+          features: [],
+          previewFixtures: ['code'],
         }),
         expect.objectContaining({
           id: 'night-study',
-          previewUrl: 'https://example.com/previews/night-study.png',
-          sha256: await sha256File(join(root, 'themes', 'packages', 'night-study.mdv-theme.json')),
+          colorScheme: 'system',
+          downloadUrl: versionedAssetUrl('https://example.com/themes/packages/night-study.mdv-theme.json', '1.0.0', nightPackageHash),
+          previewUrl: versionedAssetUrl('https://example.com/themes/previews/night-study.svg', '1.0.0', nightPreviewHash),
+          sha256: nightPackageHash,
           tags: ['dark'],
+          features: ['callouts', 'file-tree'],
+          previewFixtures: ['longform', 'table'],
         }),
       ],
     });
     expect(formatThemeIndex(index)).toContain('"themes": [\n    {');
+
+    await writeThemePreview(root, 'ink-focus', '<svg><text>Ink Focus updated</text></svg>');
+    const updatedIndex = await buildThemeIndex({ rootDir: root });
+    expect(updatedIndex.themes.find((theme) => theme.id === 'ink-focus')?.previewUrl)
+      .not.toBe(index.themes.find((theme) => theme.id === 'ink-focus')?.previewUrl);
   });
 
   it('detects a stale checked-in index', async () => {
@@ -114,10 +148,18 @@ async function writeThemePackage(root, id, content) {
   );
 }
 
+async function writeThemePreview(root, id, content) {
+  await writeFile(join(root, 'themes', 'previews', `${id}.svg`), content);
+}
+
 async function writeMetadata(root, content) {
   await writeFile(join(root, 'themes', 'metadata.json'), `${JSON.stringify(content, null, 2)}\n`);
 }
 
 async function sha256File(filePath) {
   return createHash('sha256').update(await readFile(filePath, 'utf8')).digest('hex');
+}
+
+function versionedAssetUrl(url, version, hash) {
+  return `${url}?v=${version}&h=${hash.slice(0, 16)}`;
 }

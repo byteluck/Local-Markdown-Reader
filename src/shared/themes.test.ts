@@ -1,5 +1,7 @@
 import {
   BUILTIN_READER_THEMES,
+  DEFAULT_REMOTE_THEME_INDEX_URL,
+  THEME_CSS_SANITIZER_VERSION,
   buildBuiltinThemeStylesheet,
   buildInstalledThemeStylesheet,
   deleteInstalledTheme,
@@ -15,6 +17,12 @@ import {
 } from './themes';
 
 describe('themes', () => {
+  it('uses the hosted remote theme index by default', () => {
+    expect(DEFAULT_REMOTE_THEME_INDEX_URL).toBe(
+      'https://fe-docs.baiteda.com/Local-Markdown-Reader/themes/index.json',
+    );
+  });
+
   it('parses a local theme package with tokens and css', () => {
     const theme = parseThemePackageText(JSON.stringify({
       id: 'paper-pro',
@@ -44,6 +52,79 @@ describe('themes', () => {
     });
   });
 
+  it('accepts expanded reader theme tokens for richer markdown styling', () => {
+    const theme = parseThemePackageText(JSON.stringify({
+      id: 'rich-paper',
+      name: 'Rich Paper',
+      version: '1.0.0',
+      tokens: {
+        '--reader-radius': '10px',
+        '--reader-panel-bg': '#fffdf8',
+        '--reader-panel-border': '#d8d1c4',
+        '--reader-accent': '#3b6f8f',
+        '--reader-accent-muted': '#e5eef5',
+        '--reader-selection-bg': '#d7e7f3',
+        '--reader-heading-text': '#1f2933',
+        '--reader-heading-font': 'Georgia, serif',
+        '--reader-heading-border': '#cfd8e3',
+        '--reader-font-family': 'Inter, sans-serif',
+        '--reader-monospace-font': 'Consolas, monospace',
+        '--reader-h1-size': '32px',
+        '--reader-h6-weight': '650',
+        '--reader-paragraph-spacing': '14px',
+        '--reader-list-indent': '24px',
+        '--reader-table-border': '#d8d1c4',
+        '--reader-table-cell-padding': '8px 10px',
+        '--reader-table-row-hover': '#f6f1e8',
+        '--reader-inline-code-bg': '#f0ece4',
+        '--reader-inline-code-text': '#2d3033',
+        '--reader-code-radius': '6px',
+        '--reader-code-border': '#d8d1c4',
+        '--reader-callout-bg': '#f8f3ea',
+        '--reader-callout-title': '#1f2933',
+        '--reader-checkbox-checked-bg': '#3b6f8f',
+        '--reader-task-done': '#7b8794',
+        '--reader-mark-bg': '#fff4b8',
+        '--reader-mark-text': '#28251f',
+        '--reader-tag-bg': '#e5eef5',
+        '--reader-tag-text': '#2f5f7d',
+        '--reader-tag-radius': '999px',
+        '--reader-base-00': '#ffffff',
+        '--reader-color-blue': '#3b6f8f',
+        '--reader-toolbar-bg': '#fffdf8',
+        '--reader-tree-row-hover': '#f6f1e8',
+        '--reader-syntax-keyword': '#7c3aed',
+      },
+    }), 123);
+
+    expect(theme.tokens['--reader-radius']).toBe('10px');
+    expect(theme.tokens['--reader-heading-font']).toBe('Georgia, serif');
+    expect(theme.tokens['--reader-tag-text']).toBe('#2f5f7d');
+    expect(theme.tokens['--reader-h1-size']).toBe('32px');
+    expect(theme.tokens['--reader-table-cell-padding']).toBe('8px 10px');
+    expect(theme.tokens['--reader-syntax-keyword']).toBe('#7c3aed');
+  });
+
+  it('ships built-in themes with the expanded token set', () => {
+    for (const theme of BUILTIN_READER_THEMES) {
+      const tokens = theme.tokens;
+
+      expect(tokens['--reader-radius']).toBeTruthy();
+      expect(tokens['--reader-accent']).toBeTruthy();
+      expect(tokens['--reader-heading-text']).toBeTruthy();
+      expect(tokens['--reader-inline-code-bg']).toBeTruthy();
+      expect(tokens['--reader-mark-bg']).toBeTruthy();
+      expect(tokens['--reader-font-family']).toBeTruthy();
+      expect(tokens['--reader-h1-size']).toBeTruthy();
+      expect(tokens['--reader-table-cell-padding']).toBeTruthy();
+      expect(tokens['--reader-code-radius']).toBeTruthy();
+      expect(tokens['--reader-callout-bg']).toBeTruthy();
+      expect(tokens['--reader-checkbox-checked-bg']).toBeTruthy();
+      expect(tokens['--reader-base-00']).toBeTruthy();
+      expect(tokens['--reader-toolbar-bg']).toBeTruthy();
+    }
+  });
+
   it('builds a scoped stylesheet for installed themes', () => {
     const theme = parseThemePackageText(JSON.stringify({
       id: 'paper-pro',
@@ -58,8 +139,60 @@ describe('themes', () => {
     expect(buildInstalledThemeStylesheet(theme)).toContain('[data-reader-theme-id="installed:paper-pro"][data-reader-theme-id] {');
     expect(buildInstalledThemeStylesheet(theme)).toContain('--reader-surface: #fffefa;');
     expect(buildInstalledThemeStylesheet(theme)).toContain(
-      '[data-reader-theme-id="installed:paper-pro"][data-reader-theme-id] h1, [data-reader-theme-id="installed:paper-pro"][data-reader-theme-id] .document-reader h2',
+      '[data-reader-theme-id="installed:paper-pro"][data-reader-theme-id] h1,[data-reader-theme-id="installed:paper-pro"][data-reader-theme-id] .document-reader h2',
     );
+  });
+
+  it('parses dual-mode theme packages and stores sanitized scoped css metadata', () => {
+    const theme = parseThemePackageText(JSON.stringify({
+      id: 'dual-mode-lab',
+      name: 'Dual Mode Lab',
+      version: '1.0.0',
+      colorScheme: 'system',
+      tokens: {
+        '--reader-file-tree-row-height': '28px',
+        '--reader-surface': '#ffffff',
+      },
+      lightTokens: {
+        '--reader-page-bg': '#f8fafc',
+        '--reader-text': '#1f2937',
+      },
+      darkTokens: {
+        '--reader-page-bg': '#0f172a',
+        '--reader-text': '#e5e7eb',
+      },
+      features: ['callouts', 'file-tree', 'toolbar'],
+      previewFixtures: ['longform', 'table', 'code'],
+      css: '[data-theme-layout-scope="theme-preview-overlay"] .theme-preview__badge { position: absolute; z-index: 6; }',
+    }), 123);
+
+    expect(theme).toMatchObject({
+      id: 'dual-mode-lab',
+      colorScheme: 'system',
+      lightTokens: {
+        '--reader-page-bg': '#f8fafc',
+        '--reader-text': '#1f2937',
+      },
+      darkTokens: {
+        '--reader-page-bg': '#0f172a',
+        '--reader-text': '#e5e7eb',
+      },
+      features: ['callouts', 'file-tree', 'toolbar'],
+      previewFixtures: ['longform', 'table', 'code'],
+      sanitizerVersion: THEME_CSS_SANITIZER_VERSION,
+    });
+    expect(theme.sourceCssHash).toMatch(/^[a-f0-9]{64}$/);
+    expect(theme.scopedCssHash).toMatch(/^[a-f0-9]{64}$/);
+    expect(theme.scopedCss).toContain(
+      '[data-reader-theme-id="installed:dual-mode-lab"][data-reader-theme-id] [data-theme-layout-scope="theme-preview-overlay"] .theme-preview__badge',
+    );
+
+    const stylesheet = buildInstalledThemeStylesheet(theme);
+    expect(stylesheet).toContain('--reader-file-tree-row-height: 28px;');
+    expect(stylesheet).toContain('.theme-light[data-reader-theme-id="installed:dual-mode-lab"][data-reader-theme-id] {');
+    expect(stylesheet).toContain('.theme-dark[data-reader-theme-id="installed:dual-mode-lab"][data-reader-theme-id] {');
+    expect(stylesheet).toContain('@media (prefers-color-scheme: dark)');
+    expect(stylesheet).toContain(theme.scopedCss);
   });
 
   it('builds built-in reader themes from registered tokens and css', () => {
@@ -73,7 +206,32 @@ describe('themes', () => {
 
   it('scopes selectors inside supported conditional at-rules', () => {
     expect(scopeCss('@media (max-width: 700px) { h1 { font-size: 22px; } }', '.reader-app')).toBe(
-      '@media (max-width: 700px) {\n.reader-app h1 { font-size: 22px; }\n}',
+      '@media (max-width:700px){.reader-app h1{font-size:22px}}',
+    );
+  });
+
+  it('scopes semantic markdown selectors used by richer remote themes', () => {
+    const theme = parseThemePackageText(JSON.stringify({
+      id: 'semantic-hooks',
+      name: 'Semantic Hooks',
+      version: '1.0.0',
+      css: [
+        '.markdown-heading::before { content: ""; color: var(--reader-accent); }',
+        '.markdown-tag[data-tag="theme"] { text-transform: uppercase; }',
+        '.markdown-table-row:nth-child(even) .markdown-table-cell { background: var(--reader-table-stripe); }',
+      ].join(' '),
+    }), 123);
+
+    const stylesheet = buildInstalledThemeStylesheet(theme);
+
+    expect(stylesheet).toContain(
+      '[data-reader-theme-id="installed:semantic-hooks"][data-reader-theme-id] .markdown-heading::before',
+    );
+    expect(stylesheet).toContain(
+      '[data-reader-theme-id="installed:semantic-hooks"][data-reader-theme-id] .markdown-tag[data-tag="theme"]',
+    );
+    expect(stylesheet).toContain(
+      '[data-reader-theme-id="installed:semantic-hooks"][data-reader-theme-id] .markdown-table-row:nth-child(even) .markdown-table-cell',
     );
   });
 
@@ -97,6 +255,45 @@ describe('themes', () => {
         },
       })),
     ).toThrow('不支持的主题变量');
+  });
+
+  it('rejects unsafe theme css layout escapes and row-height values', () => {
+    expect(() =>
+      parseThemePackageText(JSON.stringify({
+        id: 'bad-row-height',
+        name: 'Bad Row Height',
+        version: '1.0.0',
+        tokens: {
+          '--reader-file-tree-row-height': '44px',
+        },
+      })),
+    ).toThrow('--reader-file-tree-row-height 必须是 22px 到 40px 之间的 px 数值。');
+
+    expect(() =>
+      parseThemePackageText(JSON.stringify({
+        id: 'bad-absolute',
+        name: 'Bad Absolute',
+        version: '1.0.0',
+        css: '.markdown-heading::before { position: absolute; }',
+      })),
+    ).toThrow('受限布局属性 position: absolute 必须作用在受控布局容器内。');
+
+    expect(() =>
+      parseThemePackageText(JSON.stringify({
+        id: 'bad-width',
+        name: 'Bad Width',
+        version: '1.0.0',
+        css: '.document-reader { max-width: 900px; }',
+      })),
+    ).toThrow('主题 CSS 不能覆盖正文阅读宽度。');
+
+    expect(() =>
+      scopeCss('[data-theme-layout-scope="mermaid-actions"] .zoom, .markdown-heading::before { position: absolute; }', '.reader-app'),
+    ).toThrow('受限布局属性 position: absolute 必须作用在受控布局容器内。');
+
+    expect(() =>
+      scopeCss('[data-theme-layout-scope="toolbar-group"] .primary { z-index: 21; }', '.reader-app'),
+    ).toThrow('主题 CSS z-index 必须在 0 到 20 之间。');
   });
 
   it('rejects unsupported package fields with a specific message', () => {
@@ -219,6 +416,8 @@ describe('themes', () => {
     const area = createStorageArea();
     const fetcher = vi.fn(async () => new Response(JSON.stringify({
       version: 1,
+      schemaVersion: 2,
+      catalogVersion: '2026.07.08.1',
       updatedAt: '2026-07-06T00:00:00.000Z',
       themes: [
         {
@@ -230,6 +429,8 @@ describe('themes', () => {
           downloadUrl: 'https://example.com/themes/ink-focus.mdv-theme.json',
           sha256: 'a'.repeat(64),
           tags: ['light', 'writing'],
+          features: ['callouts', 'file-tree'],
+          previewFixtures: ['longform', 'table'],
         },
       ],
     }), {
@@ -243,18 +444,87 @@ describe('themes', () => {
       area,
     });
 
-    expect(fetcher).toHaveBeenCalledWith('https://example.com/themes/index.json', expect.objectContaining({
-      cache: 'no-store',
-    }));
+    expect(fetcher).toHaveBeenCalledWith(
+      expect.stringMatching(/^https:\/\/example\.com\/themes\/index\.json\?t=\d+$/),
+      expect.objectContaining({ cache: 'no-cache' }),
+    );
     expect(index.themes).toHaveLength(1);
     expect(index.themes[0]).toMatchObject({
       id: 'ink-focus',
+      features: ['callouts', 'file-tree'],
+      previewFixtures: ['longform', 'table'],
       compatible: true,
     });
     await expect(loadCachedRemoteThemeIndex(area)).resolves.toMatchObject({
       sourceUrl: 'https://example.com/themes/index.json',
       themes: [expect.objectContaining({ id: 'ink-focus' })],
     });
+  });
+
+  it('adds a timestamp query when fetching the remote theme index without changing the cached source url', async () => {
+    const area = createStorageArea();
+    const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(1783500000000);
+    const fetcher = vi.fn(async () => new Response(JSON.stringify({
+      version: 1,
+      themes: [],
+    }), { status: 200 }));
+
+    try {
+      await fetchRemoteThemeIndex({
+        indexUrl: 'https://example.com/themes/index.json?channel=stable',
+        fetcher,
+        area,
+      });
+
+      expect(fetcher).toHaveBeenCalledWith(
+        'https://example.com/themes/index.json?channel=stable&t=1783500000000',
+        expect.objectContaining({ cache: 'no-cache' }),
+      );
+      await expect(loadCachedRemoteThemeIndex(area)).resolves.toMatchObject({
+        sourceUrl: 'https://example.com/themes/index.json?channel=stable',
+      });
+    } finally {
+      nowSpy.mockRestore();
+    }
+  });
+
+  it('uses a ttl cache for automatic remote indexes and a timestamp for manual refresh', async () => {
+    const area = createStorageArea();
+    const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(1783500000000);
+    const fetcher = vi.fn(async () => new Response(JSON.stringify({
+      version: 1,
+      themes: [],
+    }), { status: 200 }));
+    await saveCachedRemoteThemeIndex({
+      sourceUrl: 'https://example.com/themes/index.json',
+      fetchedAt: 1783499999000,
+      version: 1,
+      themes: [],
+    }, area);
+
+    try {
+      const cached = await fetchRemoteThemeIndex({
+        indexUrl: 'https://example.com/themes/index.json',
+        fetcher,
+        area,
+      });
+      expect(cached.fetchedAt).toBe(1783499999000);
+      expect(fetcher).not.toHaveBeenCalled();
+
+      await fetchRemoteThemeIndex({
+        indexUrl: 'https://example.com/themes/index.json',
+        fetcher,
+        area,
+        refresh: true,
+      });
+
+      expect(fetcher).toHaveBeenCalledWith(
+        'https://example.com/themes/index.json?refresh=1783500000000',
+        expect.objectContaining({ cache: 'no-cache' }),
+      );
+    } finally {
+      nowSpy.mockRestore();
+    }
   });
 
   it('rejects malformed remote theme indexes without overwriting cached data', async () => {
@@ -322,7 +592,7 @@ describe('themes', () => {
       area,
     });
 
-    expect(fetcher).toHaveBeenCalledWith('https://example.com/themes/ink-focus.mdv-theme.json', expect.objectContaining({
+    expect(fetcher).toHaveBeenCalledWith(`https://example.com/themes/ink-focus.mdv-theme.json?sha256=${sha256}`, expect.objectContaining({
       cache: 'no-store',
     }));
     expect(result.theme.id).toBe('ink-focus');

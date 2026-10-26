@@ -1,10 +1,10 @@
 import type { ManifestV3Export } from '@crxjs/vite-plugin';
 
-const manifest: ManifestV3Export = {
+const manifest = {
   manifest_version: 3,
   name: '__MSG_extensionName__',
   description: '__MSG_extensionDescription__',
-  version: '2.3.1',
+  version: '2.4.0',
   default_locale: 'en',
   icons: {
     16: 'icons/icon-16.png',
@@ -34,7 +34,12 @@ const manifest: ManifestV3Export = {
     pages: ['html-preview-sandbox.html'],
   },
   permissions: ['storage', 'scripting'],
-  host_permissions: ['file:///*', 'https://cdn.jsdelivr.net/*', 'https://raw.githubusercontent.com/*'],
+  host_permissions: [
+    'file:///*',
+    'https://cdn.jsdelivr.net/*',
+    'https://raw.githubusercontent.com/*',
+    'https://fe-docs.baiteda.com/*',
+  ],
   web_accessible_resources: [
     {
       resources: ['reader.html', 'html-preview-sandbox.html'],
@@ -48,6 +53,6 @@ const manifest: ManifestV3Export = {
       run_at: 'document_idle',
     },
   ],
-};
+} satisfies ManifestV3Export;
 
 export default manifest;

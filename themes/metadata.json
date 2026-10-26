@@ -1,46 +1,230 @@
 {
   "version": 1,
-  "updatedAt": "2026-07-06T00:00:00.000Z",
-  "packageBaseUrl": "https://raw.githubusercontent.com/elvisqi/Local-Markdown-Reader/2.0/themes/packages/",
+  "schemaVersion": 2,
+  "catalogVersion": "2026.07.14.official.4",
+  "updatedAt": "2026-07-14T00:00:00.000Z",
+  "packageBaseUrl": "https://fe-docs.baiteda.com/Local-Markdown-Reader/themes/packages/",
+  "previewBaseUrl": "https://fe-docs.baiteda.com/Local-Markdown-Reader/themes/previews/",
   "themes": {
-    "classic-journal": {
-      "tags": ["journal", "classic", "system"]
+    "quiet-focus": {
+      "tags": [
+        "minimal",
+        "focus",
+        "technical",
+        "light-dark"
+      ],
+      "previewFixtures": [
+        "longform",
+        "table",
+        "code",
+        "callouts",
+        "tasks",
+        "mermaid",
+        "json-yaml",
+        "file-tree",
+        "toolbar",
+        "outline",
+        "dashboard",
+        "note"
+      ]
     },
-    "graphite-doc": {
-      "tags": ["technical", "neutral", "light"]
+    "typewriter-studio": {
+      "tags": [
+        "serif",
+        "writing",
+        "paper",
+        "editorial"
+      ],
+      "previewFixtures": [
+        "longform",
+        "table",
+        "code",
+        "callouts",
+        "tasks",
+        "mermaid",
+        "json-yaml",
+        "file-tree",
+        "toolbar",
+        "outline",
+        "dashboard",
+        "note"
+      ]
     },
-    "ink-focus": {
-      "tags": ["technical", "light", "neutral"]
+    "topaz-workbench": {
+      "tags": [
+        "colorful",
+        "knowledge-base",
+        "tables",
+        "callouts"
+      ],
+      "previewFixtures": [
+        "longform",
+        "table",
+        "code",
+        "callouts",
+        "tasks",
+        "mermaid",
+        "json-yaml",
+        "file-tree",
+        "toolbar",
+        "outline",
+        "dashboard",
+        "note"
+      ]
     },
-    "midnight-prose": {
-      "tags": ["dark", "longform", "low-fatigue"]
+    "atlas-reference": {
+      "tags": [
+        "dense",
+        "reference",
+        "metadata",
+        "structured"
+      ],
+      "previewFixtures": [
+        "longform",
+        "table",
+        "code",
+        "callouts",
+        "tasks",
+        "mermaid",
+        "json-yaml",
+        "file-tree",
+        "toolbar",
+        "outline",
+        "dashboard",
+        "note"
+      ]
     },
-    "mint-brief": {
-      "tags": ["brief", "light", "fresh"]
+    "soft-canvas": {
+      "tags": [
+        "soft",
+        "rounded",
+        "tasks",
+        "friendly"
+      ],
+      "previewFixtures": [
+        "longform",
+        "table",
+        "code",
+        "callouts",
+        "tasks",
+        "mermaid",
+        "json-yaml",
+        "file-tree",
+        "toolbar",
+        "outline",
+        "dashboard",
+        "note"
+      ]
     },
-    "mono-grid": {
-      "tags": ["tables", "code", "system"]
+    "palette-code": {
+      "tags": [
+        "code",
+        "syntax",
+        "technical",
+        "palette"
+      ],
+      "previewFixtures": [
+        "longform",
+        "table",
+        "code",
+        "callouts",
+        "tasks",
+        "mermaid",
+        "json-yaml",
+        "file-tree",
+        "toolbar",
+        "outline",
+        "dashboard",
+        "note"
+      ]
     },
-    "night-study": {
-      "tags": ["dark", "longform", "low-contrast"]
+    "desktop-notes": {
+      "tags": [
+        "desktop",
+        "native",
+        "productivity",
+        "clean"
+      ],
+      "previewFixtures": [
+        "longform",
+        "table",
+        "code",
+        "callouts",
+        "tasks",
+        "mermaid",
+        "json-yaml",
+        "file-tree",
+        "toolbar",
+        "outline",
+        "dashboard",
+        "note"
+      ]
     },
-    "oceanic-code": {
-      "tags": ["dark", "code", "blue-green"]
+    "terminal-grid": {
+      "tags": [
+        "terminal",
+        "monospace",
+        "technical",
+        "grid"
+      ],
+      "previewFixtures": [
+        "longform",
+        "table",
+        "code",
+        "callouts",
+        "tasks",
+        "mermaid",
+        "json-yaml",
+        "file-tree",
+        "toolbar",
+        "outline",
+        "dashboard",
+        "note"
+      ]
     },
-    "paper-note": {
-      "tags": ["notes", "light", "warm"]
+    "neon-vault": {
+      "tags": [
+        "cyber",
+        "neon",
+        "glow",
+        "dark-light"
+      ],
+      "previewFixtures": [
+        "longform",
+        "table",
+        "code",
+        "callouts",
+        "tasks",
+        "mermaid",
+        "json-yaml",
+        "file-tree",
+        "toolbar",
+        "outline",
+        "dashboard",
+        "note"
+      ]
     },
-    "plum-note": {
-      "tags": ["dark", "notes", "muted"]
-    },
-    "report-grid": {
-      "tags": ["tables", "compact", "report"]
-    },
-    "solar-desk": {
-      "tags": ["daylight", "light", "low-saturation"]
-    },
-    "terminal-ink": {
-      "tags": ["terminal", "dark", "code"]
+    "editorial-contrast": {
+      "tags": [
+        "editorial",
+        "contrast",
+        "magazine",
+        "serif"
+      ],
+      "previewFixtures": [
+        "longform",
+        "table",
+        "code",
+        "callouts",
+        "tasks",
+        "mermaid",
+        "json-yaml",
+        "file-tree",
+        "toolbar",
+        "outline",
+        "dashboard",
+        "note"
+      ]
     }
   }
 }

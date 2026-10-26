@@ -1,0 +1,155 @@
+{
+  "generatedAt": "2026-07-08T00:00:00.000Z",
+  "sources": [
+    {
+      "id": "quiet-focus",
+      "license": {
+        "status": "unknown",
+        "spdx": null,
+        "url": "https://github.com/kepano/obsidian-minimal",
+        "sha256": "36bad14cf836d1c8c64dde28c091f48348122f719061cf922c2d7c46eb084c0d"
+      },
+      "usage": "inspiration-only",
+      "nameUsage": {
+        "displayName": "Quiet Focus",
+        "allowed": true,
+        "rationale": "Original product name; upstream reference is recorded for research traceability only."
+      }
+    },
+    {
+      "id": "typewriter-studio",
+      "license": {
+        "status": "unknown",
+        "spdx": null,
+        "url": "https://github.com/crashmoney/obsidian-typewriter",
+        "sha256": "842a10a379a67f2cd1181ade5513636d984f88aab344baaa3d3f60581627f75a"
+      },
+      "usage": "inspiration-only",
+      "nameUsage": {
+        "displayName": "Typewriter Studio",
+        "allowed": true,
+        "rationale": "Original product name; upstream reference is recorded for research traceability only."
+      }
+    },
+    {
+      "id": "topaz-workbench",
+      "license": {
+        "status": "unknown",
+        "spdx": null,
+        "url": "https://github.com/pkm-er/Blue-Topaz_Obsidian-css",
+        "sha256": "b13fa0ab471fff933bd7516304315f928cbc4b1579d1b890a7e9f4d329a32507"
+      },
+      "usage": "inspiration-only",
+      "nameUsage": {
+        "displayName": "Topaz Workbench",
+        "allowed": true,
+        "rationale": "Original product name; upstream reference is recorded for research traceability only."
+      }
+    },
+    {
+      "id": "atlas-reference",
+      "license": {
+        "status": "unknown",
+        "spdx": null,
+        "url": "https://github.com/slrvb/Obsidian--ITS-Theme",
+        "sha256": "1dd8c763a50d3376ee0e949bbd1acce532b31aa28d465229b453572f9560f43d"
+      },
+      "usage": "inspiration-only",
+      "nameUsage": {
+        "displayName": "Atlas Reference",
+        "allowed": true,
+        "rationale": "Original product name; upstream reference is recorded for research traceability only."
+      }
+    },
+    {
+      "id": "soft-canvas",
+      "license": {
+        "status": "unknown",
+        "spdx": null,
+        "url": "https://github.com/primary-theme/obsidian",
+        "sha256": "746e3fd2b0c6a6b26e3e1795bc339059a3c27f22e5cd0b0cecbd98b27c5a29d2"
+      },
+      "usage": "inspiration-only",
+      "nameUsage": {
+        "displayName": "Soft Canvas",
+        "allowed": true,
+        "rationale": "Original product name; upstream reference is recorded for research traceability only."
+      }
+    },
+    {
+      "id": "palette-code",
+      "license": {
+        "status": "unknown",
+        "spdx": null,
+        "url": "https://github.com/catppuccin/obsidian",
+        "sha256": "1b5314a73640992e0b4905a79c653ac799788c291833dcb8dd961bee500033d5"
+      },
+      "usage": "inspiration-only",
+      "nameUsage": {
+        "displayName": "Palette Code",
+        "allowed": true,
+        "rationale": "Original product name; upstream reference is recorded for research traceability only."
+      }
+    },
+    {
+      "id": "desktop-notes",
+      "license": {
+        "status": "unknown",
+        "spdx": null,
+        "url": "https://github.com/aaaaalexis/obsidian-cupertino",
+        "sha256": "fb7cc50b609df0d87f3edea601ac192f1a199e071a18eb3bb4db45c5231a1d36"
+      },
+      "usage": "inspiration-only",
+      "nameUsage": {
+        "displayName": "Desktop Notes",
+        "allowed": true,
+        "rationale": "Original product name; upstream reference is recorded for research traceability only."
+      }
+    },
+    {
+      "id": "terminal-grid",
+      "license": {
+        "status": "unknown",
+        "spdx": null,
+        "url": "https://github.com/zcysxy/Obsidian-Terminal-Theme",
+        "sha256": "fd815d55182a85aed6ed5e37ba8bc7f800ef9417e48935159b12b4d51c20341b"
+      },
+      "usage": "inspiration-only",
+      "nameUsage": {
+        "displayName": "Terminal Grid",
+        "allowed": true,
+        "rationale": "Original product name; upstream reference is recorded for research traceability only."
+      }
+    },
+    {
+      "id": "neon-vault",
+      "license": {
+        "status": "unknown",
+        "spdx": null,
+        "url": "https://github.com/nickmilo/Cybertron",
+        "sha256": "195d9f8fe461d4c8605fe78953af012e6bac53a93a323e3058e12406e9ef050e"
+      },
+      "usage": "inspiration-only",
+      "nameUsage": {
+        "displayName": "Neon Vault",
+        "allowed": true,
+        "rationale": "Original product name; upstream reference is recorded for research traceability only."
+      }
+    },
+    {
+      "id": "editorial-contrast",
+      "license": {
+        "status": "unknown",
+        "spdx": null,
+        "url": "https://github.com/chetachiezikeuzor/Yin-and-Yang-Theme",
+        "sha256": "444721513ae0de6aa9af30b630b087f3bdd1e1cc49e967673418891b855fb806"
+      },
+      "usage": "inspiration-only",
+      "nameUsage": {
+        "displayName": "Editorial Contrast",
+        "allowed": true,
+        "rationale": "Original product name; upstream reference is recorded for research traceability only."
+      }
+    }
+  ]
+}

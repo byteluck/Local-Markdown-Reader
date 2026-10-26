@@ -1,0 +1,88 @@
+{
+  "generatedAt": "2026-07-08T00:00:00.000Z",
+  "fixture": "stable-reader-dom-hooks",
+  "minReachableRatio": 0.8,
+  "passed": true,
+  "themes": [
+    {
+      "id": "quiet-focus",
+      "selectorCount": 98,
+      "reachableCount": 98,
+      "reachableRatio": 1,
+      "passed": true,
+      "unreachableSelectors": []
+    },
+    {
+      "id": "typewriter-studio",
+      "selectorCount": 101,
+      "reachableCount": 101,
+      "reachableRatio": 1,
+      "passed": true,
+      "unreachableSelectors": []
+    },
+    {
+      "id": "topaz-workbench",
+      "selectorCount": 99,
+      "reachableCount": 99,
+      "reachableRatio": 1,
+      "passed": true,
+      "unreachableSelectors": []
+    },
+    {
+      "id": "atlas-reference",
+      "selectorCount": 100,
+      "reachableCount": 100,
+      "reachableRatio": 1,
+      "passed": true,
+      "unreachableSelectors": []
+    },
+    {
+      "id": "soft-canvas",
+      "selectorCount": 100,
+      "reachableCount": 100,
+      "reachableRatio": 1,
+      "passed": true,
+      "unreachableSelectors": []
+    },
+    {
+      "id": "palette-code",
+      "selectorCount": 102,
+      "reachableCount": 102,
+      "reachableRatio": 1,
+      "passed": true,
+      "unreachableSelectors": []
+    },
+    {
+      "id": "desktop-notes",
+      "selectorCount": 99,
+      "reachableCount": 99,
+      "reachableRatio": 1,
+      "passed": true,
+      "unreachableSelectors": []
+    },
+    {
+      "id": "terminal-grid",
+      "selectorCount": 102,
+      "reachableCount": 102,
+      "reachableRatio": 1,
+      "passed": true,
+      "unreachableSelectors": []
+    },
+    {
+      "id": "neon-vault",
+      "selectorCount": 98,
+      "reachableCount": 98,
+      "reachableRatio": 1,
+      "passed": true,
+      "unreachableSelectors": []
+    },
+    {
+      "id": "editorial-contrast",
+      "selectorCount": 99,
+      "reachableCount": 99,
+      "reachableRatio": 1,
+      "passed": true,
+      "unreachableSelectors": []
+    }
+  ]
+}
